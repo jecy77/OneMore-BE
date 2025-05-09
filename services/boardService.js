@@ -18,8 +18,6 @@ exports.getBoardById = async (id) => {
   return await Board.getBoardById(id);
 };
 
-const Board = require("../models/boardModel");
-
 exports.deleteBoard = async (id) => {
   const [result] = await Board.deleteBoard(id);
 
