@@ -26,3 +26,12 @@ exports.createBoard = ({
 exports.deleteBoard = (id) => {
   return pool.query("DELETE FROM boards WHERE id = ?", [id]);
 };
+
+exports.updateBoard = ({ id, title, price, content }) => {
+  const sql = `
+      UPDATE boards
+      SET title = ?, price = ?, content = ?
+      WHERE id = ?
+    `;
+  return pool.query(sql, [title, price, content, id]);
+};

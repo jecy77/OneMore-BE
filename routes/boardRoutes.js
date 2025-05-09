@@ -37,12 +37,28 @@ router.get("/:id", async (req, res) => {
   }
 });
 
+// 게시글 삭제
 router.delete("/:id", async (req, res) => {
   try {
     const result = await boardService.deleteBoard(req.params.id);
     res.status(200).json(result);
   } catch (err) {
     res.status(404).json({ error: err.message });
+  }
+});
+
+// 게시글 수정
+router.put("/:id", async (req, res) => {
+  try {
+    const result = await boardService.updateBoard({
+      id: req.params.id,
+      title: req.body.title,
+      price: req.body.price,
+      content: req.body.content,
+    });
+    res.status(200).json(result);
+  } catch (err) {
+    res.status(400).json({ error: err.message });
   }
 });
 
