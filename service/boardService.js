@@ -17,3 +17,15 @@ exports.getAllBoards = async () => {
 exports.getBoardById = async (id) => {
   return await Board.getBoardById(id);
 };
+
+const Board = require("../models/boardModel");
+
+exports.deleteBoard = async (id) => {
+  const [result] = await Board.deleteBoard(id);
+
+  if (result.affectedRows === 0) {
+    throw new Error("해당 게시글이 존재하지 않습니다.");
+  }
+
+  return { message: "삭제 완료" };
+};

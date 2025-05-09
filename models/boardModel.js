@@ -22,3 +22,7 @@ exports.createBoard = ({
   `;
   return pool.query(sql, [title, price, date, content, image_path, category]);
 };
+
+exports.deleteBoard = (id) => {
+  return pool.query("DELETE FROM boards WHERE id = ?", [id]);
+};
