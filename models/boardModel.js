@@ -1,0 +1,24 @@
+const pool = require("../config/db");
+
+exports.getAllBoards = () => {
+  return pool.query("SELECT * FROM boards ORDER BY id DESC");
+};
+
+exports.getBoardById = (id) => {
+  return pool.query("SELECT * FROM boards WHERE id = ?", [id]);
+};
+
+exports.createBoard = ({
+  title,
+  price,
+  date,
+  content,
+  image_path,
+  category,
+}) => {
+  const sql = `
+    INSERT INTO boards (title, price, date, content, image_path, category)
+    VALUES (?, ?, ?, ?, ?, ?)
+  `;
+  return pool.query(sql, [title, price, date, content, image_path, category]);
+};

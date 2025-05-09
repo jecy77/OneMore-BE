@@ -1,8 +1,8 @@
 const express = require("express");
 const router = express.Router();
-const pool = require("../config/db");
+const Board = require("../models/boardModel");
 
-// board 게시
+// 게시글 등록
 router.post("/", async (req, res) => {
   const { title, price, date, content, image_path, category } = req.body;
 
@@ -11,33 +11,34 @@ router.post("/", async (req, res) => {
   }
 
   try {
-    const sql = `
-      INSERT INTO boards (title, price, date, content, image_path, category)
-      VALUES (?, ?, ?, ?, ?, ?)
-    `;
-    await pool.query(sql, [title, price, date, content, image_path, category]);
+    await Board.createBoard({
+      title,
+      price,
+      date,
+      content,
+      image_path,
+      category,
+    });
     res.status(201).json({ message: "등록 완료" });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
 });
 
-// boards 조회
+// 전체 조회
 router.get("/", async (req, res) => {
   try {
-    const [rows] = await pool.query("SELECT * FROM boards ORDER BY id DESC");
+    const [rows] = await Board.getAllBoards();
     res.json(rows);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
 });
 
-// board 단건 조회
+// 단건 조회
 router.get("/:id", async (req, res) => {
-  const { id } = req.params;
-
   try {
-    const [rows] = await pool.query("SELECT * FROM boards WHERE id = ?", [id]);
+    const [rows] = await Board.getBoardById(req.params.id);
 
     if (rows.length === 0) {
       return res.status(404).json({ error: "게시글을 찾을 수 없습니다." });
